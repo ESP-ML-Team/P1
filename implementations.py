@@ -1,5 +1,6 @@
 import numpy as np
 
+
 def mean_squared_error_gd(y, tx, initial_w, max_iters, gamma):
     """
     Linear regression using gradient descent
@@ -12,14 +13,17 @@ def mean_squared_error_gd(y, tx, initial_w, max_iters, gamma):
     """
     w = initial_w
     n = len(y)
-    
+
     for n_iter in range(max_iters):
-        gradient = 1/n * tx.T.dot(tx.dot(w) - y)
+        gradient = 1 / n * tx.T.dot(tx.dot(w) - y)
         w = w - gamma * gradient
-    
-    loss = 1/(2*n) * np.sum((y - tx.dot(w))**2) # or 1/(2*n) * np.linalg.norm(y - tx.dot(w))**2
+
+    loss = (
+        1 / (2 * n) * np.sum((y - tx.dot(w)) ** 2)
+    )  # or 1/(2*n) * np.linalg.norm(y - tx.dot(w))**2
 
     return w, loss
+
 
 def mean_squared_error_sgd(y, tx, initial_w, max_iters, gamma, mini_batch_size=1):
     """
@@ -33,18 +37,19 @@ def mean_squared_error_sgd(y, tx, initial_w, max_iters, gamma, mini_batch_size=1
     """
     w = initial_w
     n = len(y)
-    
+
     for n_iter in range(max_iters):
         random_indices = np.random.randint(0, n, mini_batch_size)
         tx_batch = tx[random_indices]
         y_batch = y[random_indices]
 
-        gradient = 1/mini_batch_size * tx_batch.T.dot(tx_batch.dot(w) - y_batch)
+        gradient = 1 / mini_batch_size * tx_batch.T.dot(tx_batch.dot(w) - y_batch)
         w = w - gamma * gradient
-    
-    loss = 1/(2*n) * np.sum((y - tx.dot(w))**2)
+
+    loss = 1 / (2 * n) * np.sum((y - tx.dot(w)) ** 2)
 
     return w, loss
+
 
 def least_squares(y, tx):
     """
@@ -59,9 +64,10 @@ def least_squares(y, tx):
     # We can solve this equation by isolating w (1) or by using np.linalg.solve (2). (2) is faster and more stable.
     w = np.linalg.solve(tx.T.dot(tx), tx.T.dot(y))
 
-    loss = 1/(2*len(y)) * np.sum((y - tx.dot(w))**2)
+    loss = 1 / (2 * len(y)) * np.sum((y - tx.dot(w)) ** 2)
 
     return w, loss
+
 
 def ridge_regression(y, tx, lambda_):
     """
@@ -75,11 +81,14 @@ def ridge_regression(y, tx, lambda_):
     # w = (X^T * X + lambda * I)^-1 * X^T * y
     # scaled: w = (X^T * X + N * lambda * I)^-1 * X^T * y
 
-    w = np.linalg.solve(tx.T.dot(tx) + 2 * len(y) * lambda_ * np.eye(tx.shape[1]), tx.T.dot(y))
+    w = np.linalg.solve(
+        tx.T.dot(tx) + 2 * len(y) * lambda_ * np.eye(tx.shape[1]), tx.T.dot(y)
+    )
 
-    loss = 1/(2*len(y)) * np.sum((y - tx.dot(w))**2)
+    loss = 1 / (2 * len(y)) * np.sum((y - tx.dot(w)) ** 2)
 
     return w, loss
+
 
 # consider adding eps = 1e-8 to y_hat to avoid log(0)
 def logistic_regression(y, tx, initial_w, max_iters, gamma):
@@ -92,6 +101,7 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma):
     :param gamma: step size
     :return: weights, loss
     """
+
     def sigmoid(x):
         return 1 / (1 + np.exp(-x))
 
@@ -99,13 +109,14 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma):
     n = len(y)
 
     for n_iter in range(max_iters):
-        gradient = 1/n * tx.T.dot(sigmoid(tx.dot(w)) - y)
+        gradient = 1 / n * tx.T.dot(sigmoid(tx.dot(w)) - y)
         w = w - gamma * gradient
-    
+
     y_hat = sigmoid(tx.dot(w))
-    loss = -1/n * np.sum(y * np.log(y_hat) + (1 - y) * np.log(1 - y_hat))
+    loss = -1 / n * np.sum(y * np.log(y_hat) + (1 - y) * np.log(1 - y_hat))
 
     return w, loss
+
 
 def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
     """
@@ -118,6 +129,7 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
     :param gamma: step size
     :return: weights, loss
     """
+
     def sigmoid(x):
         return 1 / (1 + np.exp(-x))
 
@@ -125,10 +137,10 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
     n = len(y)
 
     for n_iter in range(max_iters):
-        gradient = 1/n * tx.T.dot(sigmoid(tx.dot(w)) - y) + 2 * lambda_ * w
+        gradient = 1 / n * tx.T.dot(sigmoid(tx.dot(w)) - y) + 2 * lambda_ * w
         w = w - gamma * gradient
-    
+
     y_hat = sigmoid(tx.dot(w))
-    loss = -1/n * np.sum(y * np.log(y_hat) + (1 - y) * np.log(1 - y_hat))
+    loss = -1 / n * np.sum(y * np.log(y_hat) + (1 - y) * np.log(1 - y_hat))
 
     return w, loss
