@@ -1,0 +1,7 @@
+# inherit from "defaults.yaml"
+defaults:
+  - defaults   
+  - _self_
+
+# set parameters different from those defined in "defaults.yaml"
+gamma: 1

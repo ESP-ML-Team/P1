@@ -1,0 +1,4 @@
+hyperparameters:
+  max_iters: 100
+  gamma: 0.1
+param3: 3

@@ -85,11 +85,17 @@ ENV/
 # Spyder project settings
 .spyderproject
 
+# VS Code settings
+.vscode
+
 # Rope project settings
 .ropeproject
 
 # Mac folder attributes
 .DS_Store
+
+# Project data files
+data/*
 
 # Core latex/pdflatex auxiliary files:
 *.aux

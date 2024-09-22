@@ -1,0 +1,4 @@
+max_iters: 100
+gamma: 0.1
+other_params:
+  param3: 3
